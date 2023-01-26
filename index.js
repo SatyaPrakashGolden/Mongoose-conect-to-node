@@ -1,11 +1,22 @@
-const express = require('express')
-const app = express()
-const port = 3000
+let mongoose = require('mongoose');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const server = '127.0.0.1:27017'; // REPLACE WITH YOUR DB SERVER
+const database = 'fcc-Mail';      // REPLACE WITH YOUR DB NAME
+mongoose.set('strictQuery', false);
+class Database {
+  constructor() {
+    this._connect()
+  }
+  
+_connect() {
+     mongoose.connect(`mongodb://${server}/${database}`)
+       .then(() => {
+         console.log('Database connection successful')
+       })
+       .catch(err => {
+         console.error('Database connection error')
+       })
+  }
+}
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+module.exports = new Database()
